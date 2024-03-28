@@ -15,6 +15,7 @@ var formKey = GlobalKey<FormState>();
 //Controladores dos Campos de Texto
 var txtValor1 = TextEditingController();
 var txtValor2 = TextEditingController();
+var txtValor3 = TextEditingController();
 
 class _LoginViewState extends State<LoginView> {
   @override
@@ -40,6 +41,7 @@ class _LoginViewState extends State<LoginView> {
                 decoration: InputDecoration(
                   labelText: 'E-mail',
                   border: OutlineInputBorder(),
+                  
                 ),
 
                 //
@@ -47,9 +49,9 @@ class _LoginViewState extends State<LoginView> {
                 //
                 validator: (value) {
                   if (value == null) {
-                    return 'Informe';
+                    return 'Informe o e-mail';
                   } else if (value.isEmpty) {
-                    return 'Informe';
+                    return 'Informe o e-mail';
                   } else if (double.tryParse(value) == null) {
                     return 'Informe um valor numérico';
                   }
@@ -63,15 +65,16 @@ class _LoginViewState extends State<LoginView> {
               //Campo de texto 2
               //
               TextFormField(
-                controller: txtValor2,
+                controller: txtValor3,
 
                 style: TextStyle(fontSize: 20),
+                
                 decoration: InputDecoration(
                   labelText: 'Senha',
                   border: OutlineInputBorder(),
                 ),
                 //
-                //Validação 2
+                //Validação 3
                 //
                 validator: (value) {
                   if (value == null) {
@@ -107,12 +110,12 @@ class _LoginViewState extends State<LoginView> {
                       Navigator.pushNamed(context, 'cadastro');
                     }
                   },
-                  child: Text('OK')),
+                  child: Text('OK')
+              ),
             ],
           ),
         ),
       ),
-      backgroundColor: Color.fromARGB(255, 120, 186, 205),
     );
   }
 }
