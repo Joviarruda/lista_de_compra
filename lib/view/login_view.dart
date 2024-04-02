@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:lista_de_compra/view/cadastro_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -15,7 +16,6 @@ var formKey = GlobalKey<FormState>();
 //Controladores dos Campos de Texto
 var txtValor1 = TextEditingController();
 var txtValor2 = TextEditingController();
-var txtValor3 = TextEditingController();
 
 class _LoginViewState extends State<LoginView> {
   @override
@@ -32,16 +32,15 @@ class _LoginViewState extends State<LoginView> {
           child: Column(
             children: [
               //
-              //Campo de texto
+              //Campo de texto 1
               //
               TextFormField(
                 controller: txtValor1,
-
+                
                 style: TextStyle(fontSize: 20),
                 decoration: InputDecoration(
                   labelText: 'E-mail',
                   border: OutlineInputBorder(),
-                  
                 ),
 
                 //
@@ -49,13 +48,12 @@ class _LoginViewState extends State<LoginView> {
                 //
                 validator: (value) {
                   if (value == null) {
-                    return 'Informe o e-mail';
+                    return 'Digite o email';
                   } else if (value.isEmpty) {
-                    return 'Informe o e-mail';
-                  } else if (double.tryParse(value) == null) {
-                    return 'Informe um valor numérico';
+                    return 'Digite o email';
+                  } else if (!validateEmail(value)) {
+                    return 'Digite um email válido';
                   }
-                  //Retornar null significa sucersso válido
                   return null;
                 },
               ),
@@ -65,7 +63,7 @@ class _LoginViewState extends State<LoginView> {
               //Campo de texto 2
               //
               TextFormField(
-                controller: txtValor3,
+                controller: txtValor2,
 
                 style: TextStyle(fontSize: 20),
                 
@@ -74,7 +72,7 @@ class _LoginViewState extends State<LoginView> {
                   border: OutlineInputBorder(),
                 ),
                 //
-                //Validação 3
+                //Validação 2
                 //
                 validator: (value) {
                   if (value == null) {
@@ -84,7 +82,7 @@ class _LoginViewState extends State<LoginView> {
                   } else if (double.tryParse(value) == null) {
                     return 'Informe um valor numérico';
                   }
-                  //Retornar null significa sucersso válido
+                  //Retornar null significa sucesso válido
                   return null;
                 },
                 
@@ -95,22 +93,58 @@ class _LoginViewState extends State<LoginView> {
               //Campo de Butão
               //
               //ElevatedButton, OutlinedButton, TextButton
-              OutlinedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue.shade100,
-                    foregroundColor: Colors.blue.shade900,
-                    minimumSize: Size(200, 50),
-                    shadowColor: Colors.red,
+              Row(
+                children: [
+                  OutlinedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue.shade100,
+                      foregroundColor: Colors.blue.shade900,
+                      minimumSize: Size(100, 50),
+                    ),
+                    onPressed: () {
+                      //
+                      //Chamar os validadores dos campos de texto
+                      //
+                      
+                      if (txtValor1.text.isNotEmpty && validateEmail(txtValor1.text)) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Sua nova senha foi enviada!'),
+                            duration: Duration(seconds: 3),
+                          ),
+                        );
+                      }
+                      else{
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('E-mail invalido!'),
+                            duration: Duration(seconds: 3),
+                          ),
+                        );
+                      }
+                    },
+                    child: Text('Esquci a Senha')
                   ),
-                  onPressed: () {
-                    //
-                    //Chamar os validadores dos campos de texto
-                    //
-                    if (formKey.currentState!.validate()) { 
-                      Navigator.pushNamed(context, 'cadastro');
-                    }
-                  },
-                  child: Text('OK')
+                  SizedBox(height: 0,width: 30),
+
+                  OutlinedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue.shade100,
+                      foregroundColor: Colors.blue.shade900,
+                      minimumSize: Size(100, 50),
+                    ),
+                    onPressed: () {
+                      //
+                      //Chamar os validadores dos campos de texto
+                      //
+                      if (formKey.currentState!.validate()) { 
+                        Navigator.pushNamed(context, 'cadastro');
+                      }
+                    },
+                    child: Text('OK')
+                  ),
+                  
+                ],
               ),
             ],
           ),
@@ -118,4 +152,9 @@ class _LoginViewState extends State<LoginView> {
       ),
     );
   }
+}
+bool validateEmail(String email) {
+  // Regular expression pattern for a valid email address
+  const pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+  return RegExp(pattern).hasMatch(email);
 }

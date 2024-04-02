@@ -15,6 +15,7 @@ var formKey = GlobalKey<FormState>();
 var txtValor1 = TextEditingController();
 var txtValor2 = TextEditingController();
 var txtValor3 = TextEditingController();
+
 class _CadastroViewState extends State<CadastroView> {
   @override
   Widget build(BuildContext context) {
@@ -139,7 +140,7 @@ class _CadastroViewState extends State<CadastroView> {
                   //
                   // Navegação
                   //
-                  Navigator.pushNamed(context, 't3');
+                  Navigator.pushNamed(context, 'lista');
                 },
                 child: Text('Cadastrar'),
               ),
@@ -148,7 +149,7 @@ class _CadastroViewState extends State<CadastroView> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue.shade100,
                   foregroundColor: Colors.blue.shade900,
-                  minimumSize: Size(200, 50),
+                  minimumSize: Size(100, 50),
                   shadowColor: Colors.red,
                 ),
                 onPressed: () {
@@ -156,7 +157,7 @@ class _CadastroViewState extends State<CadastroView> {
                   //Chamar os validadores dos campos de texto
                   //
                   if (formKey.currentState!.validate()) {
-                     Navigator.pushNamed(context, 'cadastro');
+                    Navigator.pushNamed(context, 'lista');
                   }
                 },
                 child: Text('OK')
