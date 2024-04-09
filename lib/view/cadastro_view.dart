@@ -56,7 +56,7 @@ class _CadastroViewState extends State<CadastroView> {
                   } else if (value.isEmpty) {
                     return 'Informe o e-mail';
                   } else if (!validateEmail(value)) {
-                    return 'Informe um valor numérico';
+                    return 'Informe um e-mail válido!';
                   }
                   //Retornar null significa sucersso válido
                   return null;

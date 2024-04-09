@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:lista_de_compra/view/login_view.dart';
 
 import 'view/cadastro_view.dart';
-import 'view/editar_compra_view.dart';
+import 'view/editar_lista_view.dart';
 import 'view/lista_compra_view.dart';
 import 'view/sobre_view.dart';
+import 'view/criar_lista_view.dart';
 
 void main() {
   runApp(
@@ -25,15 +26,15 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Lista de Compras',
-      initialRoute: 'lista',
-      //
+      initialRoute: 'login',
+      
       //ROTAS DE NAVEGAÇÃO
-      //
       routes: {
         'login': (context) => LoginView(),
         'cadastro': (context) => CadastroView(),
+        'lista': (context) => ListaView(lista: [],),
         'editar': (context) => EditarView(),
-        'lista': (context) => ListaView(),
+        'criar': (context) => CriarView(),
         'sobre': (context) => SobreView(),
       },
     );

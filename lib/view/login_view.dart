@@ -48,11 +48,11 @@ class _LoginViewState extends State<LoginView> {
                 //
                 validator: (value) {
                   if (value == null) {
-                    return 'Digite o email';
+                    return 'Digite o e-mail';
                   } else if (value.isEmpty) {
-                    return 'Digite o email';
+                    return 'Digite o e-mail';
                   } else if (!validateEmail(value)) {
-                    return 'Digite um email válido';
+                    return 'Digite um e-mail válido';
                   }
                   return null;
                 },
@@ -104,24 +104,31 @@ class _LoginViewState extends State<LoginView> {
                         //
                         //Chamar os validadores dos campos de texto
                         //
-
-                        if (txtValor1.text.isNotEmpty && validateEmail(txtValor1.text)) {
+                        if (txtValor1.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Insira o e-mail de cadastro!'),
+                              duration: Duration(seconds: 4),
+                            ),
+                          );
+                        } else if(!validateEmail(txtValor1.text)){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Insira um e-mail invalido!'),
+                              duration: Duration(seconds: 4),
+                            ),
+                          );
+                        } else{
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('Sua nova senha foi enviada!'),
-                              duration: Duration(seconds: 3),
+                              duration: Duration(seconds: 4),
                             ),
                           );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('E-mail invalido!'),
-                              duration: Duration(seconds: 3),
-                            ),
-                          );
-                        }
+                        };
                       },
-                      child: Text('Esquci a Senha')),
+                      child: Text('Esquci a Senha')
+                    ),
                   SizedBox(height: 0, width: 15),
 
                   OutlinedButton(
