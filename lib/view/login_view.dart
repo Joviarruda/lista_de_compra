@@ -23,7 +23,7 @@ class _LoginViewState extends State<LoginView> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
-        backgroundColor: Colors.blue.shade900,
+        backgroundColor: const Color.fromARGB(255, 16, 62, 19),
       ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(50, 100, 50, 100),
@@ -36,7 +36,7 @@ class _LoginViewState extends State<LoginView> {
               //
               TextFormField(
                 controller: txtValor1,
-                
+
                 style: TextStyle(fontSize: 20),
                 decoration: InputDecoration(
                   labelText: 'E-mail',
@@ -66,7 +66,7 @@ class _LoginViewState extends State<LoginView> {
                 controller: txtValor2,
 
                 style: TextStyle(fontSize: 20),
-                
+
                 decoration: InputDecoration(
                   labelText: 'Senha',
                   border: OutlineInputBorder(),
@@ -85,7 +85,6 @@ class _LoginViewState extends State<LoginView> {
                   //Retornar null significa sucesso válido
                   return null;
                 },
-                
               ),
               SizedBox(height: 30),
 
@@ -97,54 +96,63 @@ class _LoginViewState extends State<LoginView> {
                 children: [
                   OutlinedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue.shade100,
-                      foregroundColor: Colors.blue.shade900,
+                      backgroundColor: Colors.green.shade200,
+                      foregroundColor: const Color.fromARGB(255, 16, 62, 19),
                       minimumSize: Size(100, 50),
                     ),
-                    onPressed: () {
-                      //
-                      //Chamar os validadores dos campos de texto
-                      //
-                      
-                      if (txtValor1.text.isNotEmpty && validateEmail(txtValor1.text)) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Sua nova senha foi enviada!'),
-                            duration: Duration(seconds: 3),
-                          ),
-                        );
-                      }
-                      else{
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('E-mail invalido!'),
-                            duration: Duration(seconds: 3),
-                          ),
-                        );
-                      }
-                    },
-                    child: Text('Esquci a Senha')
-                  ),
-                  SizedBox(height: 0,width: 30),
+                      onPressed: () {
+                        //
+                        //Chamar os validadores dos campos de texto
+                        //
+
+                        if (txtValor1.text.isNotEmpty && validateEmail(txtValor1.text)) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Sua nova senha foi enviada!'),
+                              duration: Duration(seconds: 3),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('E-mail invalido!'),
+                              duration: Duration(seconds: 3),
+                            ),
+                          );
+                        }
+                      },
+                      child: Text('Esquci a Senha')),
+                  SizedBox(height: 0, width: 15),
 
                   OutlinedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue.shade100,
-                      foregroundColor: Colors.blue.shade900,
+                      backgroundColor: Colors.green.shade200,
+                      foregroundColor: const Color.fromARGB(255, 16, 62, 19),
                       minimumSize: Size(100, 50),
                     ),
                     onPressed: () {
-                      //
-                      //Chamar os validadores dos campos de texto
-                      //
-                      if (formKey.currentState!.validate()) { 
-                        Navigator.pushNamed(context, 'cadastro');
-                      }
+                      Navigator.pushNamed(context, 'cadastro');
                     },
-                    child: Text('OK')
+                    child: Text('Cadastrar-se')
                   ),
-                  
                 ],
+              ),
+              SizedBox(height: 30),
+              OutlinedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green.shade200,
+                  foregroundColor: const Color.fromARGB(255, 16, 62, 19),
+                  minimumSize: Size(100, 50),
+                ),
+                onPressed: () {
+                  //
+                  //Chamar os validadores dos campos de texto
+                  //
+                  if (formKey.currentState!.validate()) {
+                    Navigator.pushNamed(context, 'lista');
+                  }
+                },
+                child: Text('Logar')
               ),
             ],
           ),

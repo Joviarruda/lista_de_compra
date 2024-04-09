@@ -26,7 +26,8 @@ class _CadastroViewState extends State<CadastroView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cadastro'),
+        title: Text('Login'),
+        backgroundColor: const Color.fromARGB(255, 16, 62, 19),
       ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(50, 100, 50, 100),
@@ -54,7 +55,7 @@ class _CadastroViewState extends State<CadastroView> {
                     return 'Informe o e-mail';
                   } else if (value.isEmpty) {
                     return 'Informe o e-mail';
-                  } else if (double.tryParse(value) == null) {
+                  } else if (!validateEmail(value)) {
                     return 'Informe um valor numérico';
                   }
                   //Retornar null significa sucersso válido
@@ -78,12 +79,12 @@ class _CadastroViewState extends State<CadastroView> {
                 //
                 //Validação 2
                 //
-                validator: (value) {
-                  if (value == null) {
+                validator: (value2) {
+                  if (value2 == null) {
                     return 'Informe senha';
-                  } else if (value.isEmpty) {
+                  } else if (value2.isEmpty) {
                     return 'Informe senha';
-                  } else if (double.tryParse(value) == null) {
+                  } else if (double.tryParse(value2) == null) {
                     return 'Informe um valor numérico';
                   }
                   //Retornar null significa sucersso válido
@@ -108,59 +109,44 @@ class _CadastroViewState extends State<CadastroView> {
                 //Validação 3
                 //
                 validator: (value) {
-                  if (value == null) {
-                    return 'Informe a senha';
-                  } else if (value.isEmpty) {
-                    return 'Informe senha';
-                  } else if (double.tryParse(value) == null) {
-                    return 'Informe um valor numérico';
-                  }
+                  if (value != txtValor2.text) {
+                    return 'Senhas não conferem';
+                  } 
                   //Retornar null significa sucersso válido
                   return null;
                 },
               ),
-              
-              //
-              //Campo de Butão
-              //
-              //ElevatedButton, OutlinedButton, TextButton
-              OutlinedButton(
-                onPressed: () {
-                  //
-                  // Navegação
-                  //
-                  Navigator.pop(context);
-                },
-                child: Text('Cancelar'),
-              ),
+              SizedBox(height: 30),
 
-              SizedBox(height: 0, width: 30),
-              OutlinedButton(
-                onPressed: () {
-                  //
-                  // Navegação
-                  //
-                  Navigator.pushNamed(context, 'lista');
-                },
-                child: Text('Cadastrar'),
-              ),
+              Row(
+                children: [
+                  OutlinedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green.shade200,
+                      foregroundColor: const Color.fromARGB(255, 16, 62, 19),
+                      minimumSize: Size(100, 50),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Login'),
+                  ),
+                  SizedBox(height: 0, width: 50),
 
-              OutlinedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue.shade100,
-                  foregroundColor: Colors.blue.shade900,
-                  minimumSize: Size(100, 50),
-                  shadowColor: Colors.red,
-                ),
-                onPressed: () {
-                  //
-                  //Chamar os validadores dos campos de texto
-                  //
-                  if (formKey.currentState!.validate()) {
-                    Navigator.pushNamed(context, 'lista');
-                  }
-                },
-                child: Text('OK')
+                  OutlinedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green.shade200,
+                      foregroundColor: const Color.fromARGB(255, 16, 62, 19),
+                      minimumSize: Size(100, 50),
+                    ),
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                       Navigator.pushNamed(context, 'lista');
+                      }
+                    },
+                    child: Text('Cadastrar'),
+                  ),
+                ],
               ),
             ],
           ),
@@ -168,4 +154,9 @@ class _CadastroViewState extends State<CadastroView> {
       ),
     );
   }
+}
+bool validateEmail(String email) {
+  // Regular expression pattern for a valid email address
+  const pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+  return RegExp(pattern).hasMatch(email);
 }
