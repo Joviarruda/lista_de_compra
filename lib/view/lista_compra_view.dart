@@ -139,7 +139,9 @@ class _ListaViewState extends State<ListaView> {
             onPressed: () {
               setState(() {
                 // Cria uma nova lista com um nome padrão
-                final novaLista = Listas(nome: 'Lista ${dados.length + 1}');
+                final novoItem = Itens('Produto ${dados.length + 1}');
+                // Cria uma nova lista com um nome padrão
+                final novaLista = Listas('Lista ${dados.length + 1}',novoItem as List<Itens>);
                 // Adiciona a nova lista à lista de dados
                 dados.add(novaLista);
               });
