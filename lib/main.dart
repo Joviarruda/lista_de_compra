@@ -7,7 +7,7 @@ import 'view/cadastro_view.dart';
 import 'view/editar_lista_view.dart';
 import 'view/lista_compra_view.dart';
 import 'view/sobre_view.dart';
-import 'view/criar_lista_view.dart';
+
 
 void main() {
   runApp(
@@ -34,7 +34,6 @@ class MainApp extends StatelessWidget {
         'cadastro': (context) => CadastroView(),
         'lista': (context) => ListaView(lista: [],),
         'editar': (context) => EditarView(),
-        'criar': (context) => CriarView(),
         'sobre': (context) => SobreView(),
       },
     );

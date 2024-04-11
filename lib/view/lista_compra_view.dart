@@ -1,6 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutablport 'package:flutter/material.dart';
+import 'package:lista_de_compra/model/listas.dart';
 import 'package:flutter/material.dart';
 import 'package:lista_de_compra/model/listas.dart';
+import 'package:lista_de_compra/model/itens.dart';
+
+int lstindex = 0;
 
 class ListaView extends StatefulWidget {
   const ListaView({Key? key, required List<Listas> lista}) : super(key: key);
@@ -12,6 +16,7 @@ class ListaView extends StatefulWidget {
 class _ListaViewState extends State<ListaView> {
   // Declaração da lista dinâmica de Listas
   List<Listas> dados = [];
+  List<Itens> itens = [];
 
   @override
   void initState() {
@@ -28,78 +33,134 @@ class _ListaViewState extends State<ListaView> {
         backgroundColor: Colors.blue.shade900,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            // Exibe as listas de compras
-            Expanded(
-              child: ListView.builder(
-                itemCount: dados.length,
-                itemBuilder: (context, index) {
-                  // Para cada Lista, cria um Card
-                  return Card(
-                    child: ListTile(
-                      title: Text(dados[index].nome),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Exibe os itens da lista de compras
-                          for (var item in dados[index].itens)(
-                            Text(item.nome)
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        // Ação ao tocar na lista
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(dados[index].nome)),
-                        );
-                      },
-                      onLongPress: () {
-                        // Ação ao pressionar longamente na lista
-                        setState(() {
-                          dados.removeAt(index);
-                        });
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
-            Row(
+        padding: EdgeInsets.fromLTRB(20, 100, 20, 100),
+        child: ListView.builder(
+          itemCount: dados.length,
+          itemBuilder: (context, index) {
+            return Column(
               children: [
-                // Botão "Login"
-                const SizedBox(width: 50), // Espaçamento
-                OutlinedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green.shade200,
-                    foregroundColor: const Color.fromARGB(255, 16, 62, 19),
-                    minimumSize: const Size(100, 50),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey.shade400, // Cor da borda
+                      width: 1.0, // Largura da borda
+                    ),
+                    borderRadius:
+                        BorderRadius.circular(10.0), // Borda arredondada
                   ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'criar');
-                  },
-                  child: const Text('Criar Lista'),
-                ),
-                const SizedBox(width: 50), // Espaçamento
-                // Botão "Editar lista"
-                OutlinedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green.shade200,
-                    foregroundColor: const Color.fromARGB(255, 16, 62, 19),
-                    minimumSize: const Size(100, 50),
+                  child: ListTile(
+                    title: GestureDetector(
+                      onLongPress: () async {
+                        final value = await showMenu(
+                          context: context,
+                          position: RelativeRect.fromLTRB(50.0, 50.0, 0.0, 0.0),
+                          items: <PopupMenuEntry>[
+                            PopupMenuItem(
+                              value: 'rename',
+                              child: Text('Renomear'),
+                            ),
+                            PopupMenuItem(
+                              value: 'delete',
+                              child: Text('Deletar'),
+                            ),
+                          ],
+                        );
+                        if (value == 'delete') {
+                          setState(() {
+                            dados.removeAt(index);
+                          });
+                        } else if (value == 'rename') {
+                          final newName = await showDialog<String>(
+                            context: context,
+                            builder: (context) => Builder(
+                              builder: (innerContext) {
+                                final controller = TextEditingController();
+                                return AlertDialog(
+                                  title: Text('Renomear lista'),
+                                  content: TextField(
+                                    controller: controller,
+                                    autofocus: true,
+                                    decoration: InputDecoration(
+                                      labelText: 'Novo nome',
+                                    ),
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: Text('Cancelar'),
+                                      onPressed: () {
+                                        Navigator.of(innerContext).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text('OK'),
+                                      onPressed: () {
+                                        Navigator.of(innerContext)
+                                            .pop(controller.text);
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          );
+                          if (newName != null) {
+                            setState(() {
+                              dados[index].nome =
+                                  newName; // Atualiza o nome da lista
+                            });
+                          }
+                        }
+                      },
+                      child: Text(dados[index].nome), // Exibe o nome da lista
+                    ),
+                    onTap: () {
+                      lstindex = index;
+                      Navigator.pushNamed(context, 'lista',
+                          arguments: dados[index]);
+                    },
                   ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'edita');
-                  },
-                  child: const Text('Editar lista'),
                 ),
+                SizedBox(height: 20), // Espaço entre as listas
               ],
-            ),
-          ],
+            );
+          },
         ),
       ),
-      
+      bottomNavigationBar: Row(
+        children: [
+          // Botão "Criar Lista"
+          const SizedBox(width: 50), // Espaçamento
+          OutlinedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green.shade200,
+              foregroundColor: const Color.fromARGB(255, 16, 62, 19),
+              minimumSize: const Size(100, 50),
+            ),
+            onPressed: () {
+              setState(() {
+                // Cria uma nova lista com um nome padrão
+                final novaLista = Listas(nome: 'Lista ${dados.length + 1}');
+                // Adiciona a nova lista à lista de dados
+                dados.add(novaLista);
+              });
+            },
+            child: const Text('Criar Lista'),
+          ),
+          const SizedBox(width: 50), // Espaçamento
+          // Botão "Editar lista"
+          OutlinedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green.shade200,
+              foregroundColor: const Color.fromARGB(255, 16, 62, 19),
+              minimumSize: const Size(100, 50),
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, 'edita');
+            },
+            child: const Text('Editar lista'),
+          ),
+        ],
+      ),
     );
   }
 }

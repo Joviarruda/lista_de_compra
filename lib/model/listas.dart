@@ -2,7 +2,7 @@ import 'package:lista_de_compra/model/itens.dart';
 
 class Listas {
   //atributos
-  final String nome;
+  late final String nome;
   List<Itens> itens = [];
 
   //construtor
