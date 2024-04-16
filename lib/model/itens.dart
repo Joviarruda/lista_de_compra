@@ -1,7 +1,8 @@
 class Itens{
   //atributos
-  final String nome;
+  late final String nomeI;
+  late final String num;
   
   //construtor
-  Itens(this.nome);
+  Itens({required String nomeI, required String num}) : this.nomeI = nomeI, this.num = num;
 }

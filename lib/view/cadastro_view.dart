@@ -19,15 +19,10 @@ var txtValor3 = TextEditingController();
 class _CadastroViewState extends State<CadastroView> {
   @override
   Widget build(BuildContext context) {
-    //
-    //Recuperar argumento passado como parametro
-    //
-    final nome = ModalRoute.of(context)!.settings.arguments;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
-        backgroundColor: const Color.fromARGB(255, 16, 62, 19),
+        title: Text('Cadastro'),
+        backgroundColor: const Color.fromARGB(255, 45, 217, 57),
       ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(50, 100, 50, 100),
@@ -122,8 +117,7 @@ class _CadastroViewState extends State<CadastroView> {
                 children: [
                   OutlinedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green.shade200,
-                      foregroundColor: const Color.fromARGB(255, 16, 62, 19),
+                      backgroundColor: Colors.white,
                       minimumSize: Size(100, 50),
                     ),
                     onPressed: () {
@@ -135,8 +129,7 @@ class _CadastroViewState extends State<CadastroView> {
 
                   OutlinedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green.shade200,
-                      foregroundColor: const Color.fromARGB(255, 16, 62, 19),
+                      backgroundColor: Colors.white,
                       minimumSize: Size(100, 50),
                     ),
                     onPressed: () {

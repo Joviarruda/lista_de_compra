@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:lista_de_compra/view/cadastro_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -23,7 +22,7 @@ class _LoginViewState extends State<LoginView> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
-        backgroundColor: const Color.fromARGB(255, 16, 62, 19),
+        backgroundColor: const Color.fromARGB(255, 45, 217, 57),
       ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(50, 100, 50, 100),
@@ -96,8 +95,7 @@ class _LoginViewState extends State<LoginView> {
                 children: [
                   OutlinedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green.shade200,
-                      foregroundColor: const Color.fromARGB(255, 16, 62, 19),
+                      backgroundColor: Colors.white,
                       minimumSize: Size(100, 50),
                     ),
                       onPressed: () {
@@ -133,8 +131,7 @@ class _LoginViewState extends State<LoginView> {
 
                   OutlinedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green.shade200,
-                      foregroundColor: const Color.fromARGB(255, 16, 62, 19),
+                      backgroundColor: Colors.white,
                       minimumSize: Size(100, 50),
                     ),
                     onPressed: () {
@@ -147,8 +144,7 @@ class _LoginViewState extends State<LoginView> {
               SizedBox(height: 30),
               OutlinedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green.shade200,
-                  foregroundColor: const Color.fromARGB(255, 16, 62, 19),
+                  backgroundColor: Colors.white,
                   minimumSize: Size(100, 50),
                 ),
                 onPressed: () {

@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutablport 'package:flutter/material.dart';
 import 'package:lista_de_compra/model/listas.dart';
 import 'package:flutter/material.dart';
-import 'package:lista_de_compra/model/listas.dart';
 import 'package:lista_de_compra/model/itens.dart';
 
 int lstindex = 0;
@@ -15,22 +14,15 @@ class ListaView extends StatefulWidget {
 
 class _ListaViewState extends State<ListaView> {
   // Declaração da lista dinâmica de Listas
-  List<Listas> dados = [];
+  final List<Listas> dados = Listas.preencher();
   List<Itens> itens = [];
-
-  @override
-  void initState() {
-    // Preenche a lista de Listas com dados de exemplo
-    dados = Listas.preencher();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Listas'),
-        backgroundColor: Colors.blue.shade900,
+        title: Text('Listas'),
+        backgroundColor: const Color.fromARGB(255, 45, 217, 57),
       ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(20, 100, 20, 100),
@@ -46,7 +38,7 @@ class _ListaViewState extends State<ListaView> {
                       width: 1.0, // Largura da borda
                     ),
                     borderRadius:
-                        BorderRadius.circular(10.0), // Borda arredondada
+                      BorderRadius.circular(10.0), // Borda arredondada
                   ),
                   child: ListTile(
                     title: GestureDetector(
@@ -94,8 +86,7 @@ class _ListaViewState extends State<ListaView> {
                                     TextButton(
                                       child: Text('OK'),
                                       onPressed: () {
-                                        Navigator.of(innerContext)
-                                            .pop(controller.text);
+                                        Navigator.of(innerContext).pop(controller.text);
                                       },
                                     ),
                                   ],
@@ -105,18 +96,16 @@ class _ListaViewState extends State<ListaView> {
                           );
                           if (newName != null) {
                             setState(() {
-                              dados[index].nome =
-                                  newName; // Atualiza o nome da lista
+                              dados[index].nomeL = newName; // Atualiza o nome da lista
                             });
                           }
                         }
                       },
-                      child: Text(dados[index].nome), // Exibe o nome da lista
+                      child: Text(dados[index].nomeL), // Exibe o nome da lista
                     ),
                     onTap: () {
                       lstindex = index;
-                      Navigator.pushNamed(context, 'lista',
-                          arguments: dados[index]);
+                      Navigator.pushNamed(context, 'editar',arguments: dados[index].nomeL);
                     },
                   ),
                 ),
@@ -127,21 +116,19 @@ class _ListaViewState extends State<ListaView> {
         ),
       ),
       bottomNavigationBar: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // Botão "Criar Lista"
           const SizedBox(width: 50), // Espaçamento
           OutlinedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green.shade200,
-              foregroundColor: const Color.fromARGB(255, 16, 62, 19),
+              backgroundColor: Colors.white,
               minimumSize: const Size(100, 50),
             ),
             onPressed: () {
               setState(() {
                 // Cria uma nova lista com um nome padrão
-                final novoItem = Itens('Produto ${dados.length + 1}');
-                // Cria uma nova lista com um nome padrão
-                final novaLista = Listas('Lista ${dados.length + 1}',novoItem as List<Itens>);
+                final novaLista = Listas(nomeL:'Lista ${dados.length + 1}');
                 // Adiciona a nova lista à lista de dados
                 dados.add(novaLista);
               });
@@ -149,18 +136,6 @@ class _ListaViewState extends State<ListaView> {
             child: const Text('Criar Lista'),
           ),
           const SizedBox(width: 50), // Espaçamento
-          // Botão "Editar lista"
-          OutlinedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green.shade200,
-              foregroundColor: const Color.fromARGB(255, 16, 62, 19),
-              minimumSize: const Size(100, 50),
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, 'edita');
-            },
-            child: const Text('Editar lista'),
-          ),
         ],
       ),
     );

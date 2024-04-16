@@ -1,27 +1,22 @@
 import 'package:lista_de_compra/model/itens.dart';
 
 class Listas {
-  //atributos
-  late final String nome;
+  late final String nomeL;
   List<Itens> itens = [];
 
-  //construtor
-  Listas(this.nome, this.itens);
+  Listas({required this.nomeL, this.itens = const []});
 
-  //geração de dados
+  get produtos => null; 
+
   static List<Listas> preencher() {
-    //atribuindo 'lista' a lista contato
     List<Listas> lista = [];
 
     List<Itens> produtos = [];
-    produtos.add(Itens('Produto 1'));
-    produtos.add(Itens('Produto 2'));
-    produtos.add(Itens('Produto 3'));
+    produtos.add(Itens(nomeI: 'Produto 1', num:'1'));
+    produtos.add(Itens(nomeI: 'Produto 2',num:'2'));
+    produtos.add(Itens(nomeI: 'Produto 3',num:'4'));
 
-    //atribuindo a lista contato
-    lista.add(Listas('Mercado', produtos));
-    lista.add(Listas('Varejo', produtos));
-
+    lista.add(Listas(nomeL: 'Mercado', itens: produtos)); 
     return lista;
   }
 }
