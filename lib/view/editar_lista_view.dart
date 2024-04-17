@@ -4,16 +4,12 @@ import 'package:lista_de_compra/model/listas.dart';
 import 'package:lista_de_compra/model/itens.dart';
 
 class EditarView extends StatefulWidget {
-  const EditarView({Key? key}) : super(key: key);
-
   @override
   State<EditarView> createState() => _EditarViewState();
 }
 
 class _EditarViewState extends State<EditarView> {
   late Listas lista;
-  Map<String, List<Map<String, dynamic>>> listaComp = {};
-  List<Map<String, dynamic>>? resultado;
 
   @override
   void initState() {
@@ -23,11 +19,9 @@ class _EditarViewState extends State<EditarView> {
 
   @override
   Widget build(BuildContext context) {
-    final listaNome = ModalRoute.of(context)!.settings.arguments as String? ?? 'editar';
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(listaNome),
+        title: Text('Editar'),
         backgroundColor: const Color.fromARGB(255, 45, 217, 57),
         centerTitle: true,
         actions: <Widget>[
@@ -35,60 +29,93 @@ class _EditarViewState extends State<EditarView> {
             padding: const EdgeInsets.only(right: 25.0),
             child: IconButton(
               icon: Icon(Icons.search),
-              onPressed: () {
-                showDialog(
+              onPressed: () async {
+                final searchText = await showDialog<String>(
                   context: context,
                   builder: (context) {
-                    String searchQuery = '';
+                    final controller = TextEditingController();
                     return AlertDialog(
                       title: Text('Buscar Item'),
                       content: TextField(
-                        onChanged: (value) {
-                          searchQuery = value;
-                        },
+                        controller: controller,
+                        autofocus: true,
+                        decoration: InputDecoration(
+                          labelText: 'Nome do item',
+                        ),
                       ),
                       actions: <Widget>[
                         TextButton(
+                          child: Text('Cancelar'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        TextButton(
                           child: Text('Buscar'),
                           onPressed: () {
-                            resultado = buscarItems(searchQuery);
-                            Navigator.pop(context);
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text('Resultados da Busca'),
-                                  content: SizedBox(
-                                    width: double.maxFinite,
-                                    child: ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: resultado?.length,
-                                      itemBuilder: (context, index) {
-                                        return ListTile(
-                                          title: Text(resultado?[index]['nome'] ??''),
-                                          subtitle: Text(resultado?[index]['descricao'] ??''),
-                                          trailing: Text('Quantidade: ${resultado?[index]['quantidade'] ?? ''}'),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: Text('Fechar'),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          }
+                            Navigator.of(context).pop(controller.text);
+                          },
                         ),
                       ],
                     );
                   },
                 );
+
+                if (searchText != null) {
+                  // Busca pelo item com base no texto inserido
+                  final resultado = lista.itens.firstWhere(
+                    (item) => item.nomeI.toLowerCase() == searchText.toLowerCase(),
+                    orElse: () => Itens(nomeI: '', num: ''),
+                  );
+
+                  if (resultado != '') {
+                    // Se o item for encontrado, exiba suas informações em um diálogo
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('Resultado da Busca'),
+                          content: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('Lista: ${lista.nomeL}'),
+                              Text('Nome do Item: ${resultado.nomeI}'),
+                              Text('Quantidade: ${resultado.num}'),
+                            ],
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              child: Text('Fechar'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else {
+                    // Se o item não for encontrado, exiba uma mensagem de erro
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('Item não encontrado'),
+                          content: Text('O item "$searchText" não foi encontrado.'),
+                          actions: <Widget>[
+                            TextButton(
+                              child: Text('OK'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                }
               },
             ),
           )
@@ -104,12 +131,12 @@ class _EditarViewState extends State<EditarView> {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: CheckboxListTile(
-                title: Text(lista.itens[index].nomeI), 
-                subtitle: Text(lista.itens[index].num),
-                value: listaComp[listaNome]![index]['comprado'] ?? false,
+                title: Text(lista.itens[index].nomeI),
+                subtitle: Text('Quantidade ${lista.itens[index].num}'),
+                value: lista.itens[index].comprado ?? false,
                 onChanged: (bool? value) {
                   setState(() {
-                    listaComp[listaNome]![index]['comprado'] = value;
+                    lista.itens[index].comprado = value;
                   });
                 },
                 secondary: IconButton(
@@ -117,52 +144,77 @@ class _EditarViewState extends State<EditarView> {
                   onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (context) {
-                        TextEditingController nomeController = TextEditingController(text: listaComp[listaNome]![index]['nome']);
-                        TextEditingController descricaoController = TextEditingController(text: listaComp[listaNome]![index]['descricao']);
-                        TextEditingController quantidadeController = TextEditingController(text: listaComp[listaNome]![index]['quantidade'].toString());
+                      builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Editar Item'),
-                          content: Column(
-                            children: [
-                              TextField(
-                                controller: nomeController,
-                                decoration: InputDecoration(hintText: 'Nome'),
-                              ),
-                              TextField(
-                                controller: descricaoController,
-                                decoration:InputDecoration(hintText: 'Descrição'),
-                              ),
-                              TextField(
-                                controller: quantidadeController,
-                                decoration:InputDecoration(hintText: 'Quantidade'),
-                              ),
-                            ],
-                          ),
-                          actions: <Widget>[
+                          title: Text("O que deseja fazer?"),
+                          actions: [
                             TextButton(
-                              child: Text('Salvar'),
                               onPressed: () {
                                 setState(() {
-                                  Map<String, dynamic> item =listaComp[listaNome]![index];
-                                  alterarNome(item, nomeController.text);
-                                  alterarDescricao(item, descricaoController.text);
-                                  alterarQuantidade(item, int.parse(quantidadeController.text));
+                                  lista.itens.removeAt(index);
                                   Navigator.of(context).pop();
                                 });
                               },
+                              child: Text("Deletar"),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                final novoNome = await showDialog<String>(
+                                  context: context,
+                                  builder: (context) {
+                                    final controller = TextEditingController();
+                                    return AlertDialog(
+                                      title: Text('Renomear Item'),
+                                      content: TextField(
+                                        controller: controller,
+                                        autofocus: true,
+                                        decoration: InputDecoration(
+                                          labelText: 'Novo nome',
+                                        ),
+                                      ),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: Text('Cancelar'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: Text('OK'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop(controller.text);
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                if (novoNome != null) {
+                                  setState(() {
+                                    lista.itens[index].nomeI = novoNome;
+                                  });
+                                }
+                              },
+                              child: Text("Renomear"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text("Cancelar"),
                             ),
                           ],
                         );
                       },
                     );
-                  }
-                )
-              )
+                  },
+                ),
+              ),
             );
-          }
+          },
         ),
       ),
+      
       bottomNavigationBar: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -248,34 +300,5 @@ class _EditarViewState extends State<EditarView> {
       ),
     );
   }
-
-  void alterarNome(Map<String, dynamic> item, String novoNome) {
-    item['nome'] = novoNome;
-  }
-
-  void alterarDescricao(Map<String, dynamic> item, String novaDescricao) {
-    item['descricao'] = novaDescricao;
-  }
-
-  void alterarQuantidade(Map<String, dynamic> item, int novaQuantidade) {
-    item['quantidade'] = novaQuantidade.toString();
-  }
-
-  List<Map<String, dynamic>> buscarItems(String query) {
-    List<Map<String, dynamic>> results = [];
-
-    for (var listaNome in listaComp.keys) {
-      var items = listaComp[listaNome];
-      if (items != null) {
-        for (var item in items) {
-          if (item['nome'].toLowerCase().contains(query.toLowerCase()) ||
-              item['descricao'].toLowerCase().contains(query.toLowerCase())) {
-            results.add(item);
-          }
-        }
-      }
-    }
-
-    return results;
-  }
 }
+

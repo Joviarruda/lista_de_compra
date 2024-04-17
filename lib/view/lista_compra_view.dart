@@ -105,7 +105,7 @@ class _ListaViewState extends State<ListaView> {
                     ),
                     onTap: () {
                       lstindex = index;
-                      Navigator.pushNamed(context, 'editar',arguments: dados[index].nomeL);
+                      Navigator.pushNamed(context, 'editar');
                     },
                   ),
                 ),

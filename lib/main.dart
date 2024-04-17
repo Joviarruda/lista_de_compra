@@ -26,7 +26,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Lista de Compras',
-      initialRoute: 'login',
+      initialRoute: 'lista',
       
       //ROTAS DE NAVEGAÇÃO
       routes: {

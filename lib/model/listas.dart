@@ -16,7 +16,7 @@ class Listas {
     produtos.add(Itens(nomeI: 'Produto 2',num:'2'));
     produtos.add(Itens(nomeI: 'Produto 3',num:'4'));
 
-    lista.add(Listas(nomeL: 'Mercado', itens: produtos)); 
+    lista.add(Listas(nomeL: 'Mercado', itens: produtos, )); 
     return lista;
   }
 }
