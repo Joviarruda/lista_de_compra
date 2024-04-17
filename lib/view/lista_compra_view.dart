@@ -38,7 +38,7 @@ class _ListaViewState extends State<ListaView> {
                       width: 1.0, // Largura da borda
                     ),
                     borderRadius:
-                      BorderRadius.circular(10.0), // Borda arredondada
+                        BorderRadius.circular(10.0), // Borda arredondada
                   ),
                   child: ListTile(
                     title: GestureDetector(
@@ -62,7 +62,7 @@ class _ListaViewState extends State<ListaView> {
                             dados.removeAt(index);
                           });
                         } else if (value == 'rename') {
-                          final newName = await showDialog<String>(
+                          showDialog<String>(
                             context: context,
                             builder: (context) => Builder(
                               builder: (innerContext) {
@@ -86,6 +86,9 @@ class _ListaViewState extends State<ListaView> {
                                     TextButton(
                                       child: Text('OK'),
                                       onPressed: () {
+                                        setState(() {
+                                          dados[index].nomeL = controller.text; // Atualiza o nome da lista
+                                        });
                                         Navigator.of(innerContext).pop(controller.text);
                                       },
                                     ),
@@ -94,18 +97,13 @@ class _ListaViewState extends State<ListaView> {
                               },
                             ),
                           );
-                          if (newName != null) {
-                            setState(() {
-                              dados[index].nomeL = newName; // Atualiza o nome da lista
-                            });
-                          }
                         }
                       },
                       child: Text(dados[index].nomeL), // Exibe o nome da lista
                     ),
                     onTap: () {
                       lstindex = index;
-                      Navigator.pushNamed(context, 'editar');
+                      Navigator.pushNamed(context, 'editar', arguments: dados[index].nomeL);
                     },
                   ),
                 ),
@@ -128,7 +126,7 @@ class _ListaViewState extends State<ListaView> {
             onPressed: () {
               setState(() {
                 // Cria uma nova lista com um nome padrão
-                final novaLista = Listas(nomeL:'Lista ${dados.length + 1}');
+                final novaLista = Listas(nomeL: 'Lista ${dados.length + 1}');
                 // Adiciona a nova lista à lista de dados
                 dados.add(novaLista);
               });

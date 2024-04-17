@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
 
@@ -8,39 +8,33 @@ class SobreView extends StatefulWidget {
   @override
   State<SobreView> createState() => _SobreViewState();
 }
-//Chave identificadora do Form
-var formKey = GlobalKey<FormState>();
 
 class _SobreViewState extends State<SobreView> {
   @override
   Widget build(BuildContext context) {
+    String sobre = 'Sobre\n\n\nAplicativo para avaliação da P1 de PDM.\n\nDesenvolvido no VSCode.\n\nO Aplicativo consite em 4 telas, uma de Login, Cadastro, Listas de Compras e uma para edição das listas.\n\nJoão Vitor Bravo Arruda\n\nRA: 2840482221006';
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sobre'),
+        title: Text('Login'),
+        backgroundColor: const Color.fromARGB(255, 45, 217, 57),
       ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(50, 100, 50, 100),
-        child: Form(
-          key: formKey,
           child: Column(
             children: [
-              OutlinedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue.shade100,
-                  foregroundColor: Colors.blue.shade900,
-                  minimumSize: Size(200, 50),
-                  shadowColor: Colors.red,
-                ),
+              Text(
+                sobre,
+                style: TextStyle(fontSize: 20),
+              ),
+              Expanded(child: Container()),
+              ElevatedButton(
                 onPressed: () {
-                  //
-                  //Chamar os validadores dos campos de texto
-                  //
                   Navigator.pop(context);
                 },
-                child: Text('OK')
-              ),
+                child: Text('Voltar'),
+              )
             ],
-          ),
         ),
       ),
     );

@@ -1,7 +1,7 @@
 class Itens{
   //atributos
-  late final String nomeI;
-  late final String num;
+  String nomeI;
+  String num;
 
   var comprado;
   

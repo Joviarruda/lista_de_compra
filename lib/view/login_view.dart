@@ -86,7 +86,6 @@ class _LoginViewState extends State<LoginView> {
                 },
               ),
               SizedBox(height: 30),
-
               //
               //Campo de Butão
               //
@@ -156,6 +155,17 @@ class _LoginViewState extends State<LoginView> {
                   }
                 },
                 child: Text('Logar')
+              ),
+              SizedBox(height: 30),
+              OutlinedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  minimumSize: Size(100, 50),
+                ),
+                onPressed: () {  
+                  Navigator.pushNamed(context, 'sobre');
+                },
+                child: Text('Sobre')
               ),
             ],
           ),

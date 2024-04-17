@@ -10,7 +10,8 @@ class EditarView extends StatefulWidget {
 
 class _EditarViewState extends State<EditarView> {
   late Listas lista;
-
+  late Itens item;
+  
   @override
   void initState() {
     super.initState();
@@ -159,7 +160,7 @@ class _EditarViewState extends State<EditarView> {
                             ),
                             TextButton(
                               onPressed: () async {
-                                final novoNome = await showDialog<String>(
+                                showDialog<String>(
                                   context: context,
                                   builder: (context) {
                                     final controller = TextEditingController();
@@ -182,18 +183,17 @@ class _EditarViewState extends State<EditarView> {
                                         TextButton(
                                           child: Text('OK'),
                                           onPressed: () {
+                                            setState(() {
+                                              lista.itens[index].nomeI  = controller.text; // Atualiza o nome da lista
+                                            });
                                             Navigator.of(context).pop(controller.text);
+                                            Navigator.of(context).pop();
                                           },
                                         ),
                                       ],
                                     );
                                   },
                                 );
-                                if (novoNome != null) {
-                                  setState(() {
-                                    lista.itens[index].nomeI = novoNome;
-                                  });
-                                }
                               },
                               child: Text("Renomear"),
                             ),

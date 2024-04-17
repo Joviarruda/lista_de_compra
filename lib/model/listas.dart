@@ -1,7 +1,7 @@
 import 'package:lista_de_compra/model/itens.dart';
 
 class Listas {
-  late final String nomeL;
+   String nomeL;
   List<Itens> itens = [];
 
   Listas({required this.nomeL, this.itens = const []});
