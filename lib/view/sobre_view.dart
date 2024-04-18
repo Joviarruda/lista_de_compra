@@ -16,7 +16,7 @@ class _SobreViewState extends State<SobreView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('Sobre'),
         backgroundColor: const Color.fromARGB(255, 45, 217, 57),
       ),
       body: Padding(

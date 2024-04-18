@@ -3,7 +3,6 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:lista_de_compra/view/login_view.dart';
 import 'package:lista_de_compra/view/sobre_view.dart';
-
 import 'view/cadastro_view.dart';
 import 'view/editar_lista_view.dart';
 import 'view/lista_compra_view.dart';
